@@ -1,0 +1,13 @@
+{
+  "name": "nolto",
+  "version": "0.1.0",
+  "description": "Register vibe-coded plans, report phase progress, and inspect plan status from Codex CLI via the hosted Nolto MCP server.",
+  "author": { "name": "uruca-kk", "email": "fukuda@uruca.jp", "url": "https://nolto.app" },
+  "homepage": "https://nolto.app",
+  "repository": "https://github.com/uruca-kk/nolto-codex-plugin",
+  "license": "MIT",
+  "keywords": ["nolto", "mcp", "plan", "vibe-coding", "project-management", "codex"],
+  "interface": { "displayName": "Nolto" },
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

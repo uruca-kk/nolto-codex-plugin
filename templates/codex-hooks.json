@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nolto flush --detach",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -4,7 +4,7 @@
   "plugins": [
     {
       "name": "nolto",
-      "source": { "source": "local", "path": "." },
+      "source": { "source": "local", "path": "./plugins/nolto" },
       "description": "Hosted MCP server + skills for registering and tracking Nolto plans from Codex CLI.",
       "version": "0.1.0",
       "category": "project-management",

@@ -7,10 +7,18 @@ import { readFileSync, readdirSync } from "fs";
 import { resolve, join } from "path";
 import { fileURLToPath } from "url";
 
-const PLUGIN_ROOT = resolve(fileURLToPath(new URL(".", import.meta.url)), "..");
-const REPO_ROOT = resolve(PLUGIN_ROOT, "..");
-const pp = (...p) => join(PLUGIN_ROOT, ...p);
-const rp = (...p) => join(REPO_ROOT, ...p);
+// MIRROR_ROOT = codex-plugin/ (== public repo root, holds .agents/ marketplace + scripts).
+// PLUGIN_DIR  = codex-plugin/plugins/nolto/ (the plugin itself; Codex requires the plugin to
+//               live in a subdirectory of the marketplace root, not at the root — see
+//               marketplace.json source.path "./plugins/nolto").
+// REPO_ROOT   = monorepo root (canonical enum/scope sources for literal-drift checks).
+const SCRIPTS_DIR = fileURLToPath(new URL(".", import.meta.url));
+const MIRROR_ROOT = resolve(SCRIPTS_DIR, "..");
+const PLUGIN_DIR = join(MIRROR_ROOT, "plugins", "nolto");
+const REPO_ROOT = resolve(MIRROR_ROOT, "..");
+const pp = (...p) => join(PLUGIN_DIR, ...p);   // plugin-internal files
+const mp = (...p) => join(MIRROR_ROOT, ...p);  // mirror-root files (.agents/ marketplace)
+const rp = (...p) => join(REPO_ROOT, ...p);    // monorepo canonical sources
 
 // --- error collection -------------------------------------------------------
 
@@ -19,12 +27,12 @@ const fail = (file, reason) => errors.push({ file, reason });
 
 // --- I/O helpers ------------------------------------------------------------
 
-function readJSON(rel) {
-  const abs = pp(rel);
+function readJSONat(abs) {
   let raw;
   try { raw = readFileSync(abs, "utf8"); } catch { fail(abs, "File not found or unreadable"); return null; }
   try { return JSON.parse(raw); } catch (e) { fail(abs, `Invalid JSON: ${e.message}`); return null; }
 }
+const readJSON = (rel) => readJSONat(pp(rel)); // plugin-internal JSON
 
 function readRepo(rel) {
   const abs = rp(rel);
@@ -128,9 +136,10 @@ function checkPlugin() {
 // --- .agents/plugins/marketplace.json ---------------------------------------
 
 function checkMarketplace() {
-  const d = readJSON(".agents/plugins/marketplace.json");
+  // marketplace.json lives at the MIRROR root (public repo root), not inside the plugin dir.
+  const f = mp(".agents/plugins/marketplace.json");
+  const d = readJSONat(f);
   if (!d) return;
-  const f = pp(".agents/plugins/marketplace.json");
   if (d.name !== "nolto") fail(f, `name must be "nolto", got: ${JSON.stringify(d.name)}`);
   // Codex marketplace uses interface.displayName (not owner.name)
   if (!d.interface || typeof d.interface.displayName !== "string" || !d.interface.displayName)
@@ -142,7 +151,9 @@ function checkMarketplace() {
   if (!e.source || typeof e.source !== "object") { fail(f, 'plugins[0].source must be an object with source and path fields'); }
   else {
     if (e.source.source !== "local") fail(f, `plugins[0].source.source must be "local", got: ${JSON.stringify(e.source.source)}`);
-    if (e.source.path !== ".") fail(f, `plugins[0].source.path must be ".", got: ${JSON.stringify(e.source.path)}`);
+    // Codex requires the plugin in a subdirectory of the marketplace root (path "." does not
+    // register — verified on codex-cli 0.137.0). The plugin lives at ./plugins/nolto.
+    if (e.source.path !== "./plugins/nolto") fail(f, `plugins[0].source.path must be "./plugins/nolto", got: ${JSON.stringify(e.source.path)}`);
   }
   if (e.version !== "0.1.0") fail(f, `plugins[0].version must be "0.1.0", got: "${e.version}"`);
   if (!e.description) fail(f, "plugins[0].description must be non-empty");

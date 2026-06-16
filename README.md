@@ -43,7 +43,20 @@ codex mcp login nolto
 
 ## ヘッドレス / CI 環境
 
-SSH リモートやコンテナなど、ブラウザを開けない環境では Personal API Token を使ってください。
+SSH リモートやコンテナなど、ブラウザを開けない環境では OAuth（`codex mcp login`）が完了できません。代わりに以下を使ってください。
+
+### 推奨: `nolto login`（device-code フロー）
+
+[`@nolto/cli`](https://www.npmjs.com/package/@nolto/cli)（>= 0.3.0）の `nolto login` は、**別端末（スマホ・ラップトップ）のブラウザ**で承認するだけのヘッドレス向け認証です。
+
+```bash
+npm install -g @nolto/cli
+nolto login --client codex
+```
+
+表示 URL を任意の端末で承認すると、トークンを取得して `codex mcp add nolto --url https://nolto.app/mcp --bearer-token-env-var NOLTO_TOKEN` を実行します（`NOLTO_TOKEN` を環境に設定してください）。
+
+### 代替: 手動で Personal API Token を渡す
 
 ```bash
 codex mcp add nolto --url https://nolto.app/mcp --bearer-token-env-var NOLTO_TOKEN

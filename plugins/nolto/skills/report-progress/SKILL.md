@@ -73,7 +73,7 @@ planId や phaseId が手元にない場合は以下の手順で取得します:
 
 | エラー | 対処 |
 |--------|------|
-| `401 Unauthorized` | OAuth トークンが切れています。`codex mcp login nolto` で再認証を促してください。 |
+| `401 Unauthorized` | 認証が切れています。**ヘッドレス環境では `nolto login --client codex`**（`@nolto/cli` >= 0.3.0）で再認証、デスクトップは `codex mcp login nolto` で再認証するようユーザーに案内してください。 |
 | `429 Too Many Requests` | `Retry-After` ヘッダーの秒数だけ待ってから再試行します。 |
 | 状態遷移エラー | サーバーから返ったエラーメッセージをそのままユーザーに表示します。 |
 | 無効な verdict / status | 上記の有効値一覧を確認し、正しい値でリトライします。 |

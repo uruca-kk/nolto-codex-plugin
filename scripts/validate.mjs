@@ -116,7 +116,7 @@ function checkPlugin() {
   if (!/^[a-z][a-z0-9-]*$/.test(d.name)) fail(f, `name must be kebab-case, got: ${JSON.stringify(d.name)}`);
   else if (d.name !== "nolto") fail(f, `name must be "nolto", got: "${d.name}"`);
   if (!/^\d+\.\d+\.\d+$/.test(d.version)) fail(f, `version must be semver, got: ${JSON.stringify(d.version)}`);
-  if (d.version !== "0.1.0") fail(f, `version must be "0.1.0", got: "${d.version}"`);
+  if (d.version !== "0.1.1") fail(f, `version must be "0.1.1", got: "${d.version}"`);
   // Codex uses interface.displayName instead of top-level displayName
   if (!d.interface || typeof d.interface !== "object") fail(f, "interface must be an object");
   else if (typeof d.interface.displayName !== "string" || !d.interface.displayName)
@@ -155,7 +155,7 @@ function checkMarketplace() {
     // register — verified on codex-cli 0.137.0). The plugin lives at ./plugins/nolto.
     if (e.source.path !== "./plugins/nolto") fail(f, `plugins[0].source.path must be "./plugins/nolto", got: ${JSON.stringify(e.source.path)}`);
   }
-  if (e.version !== "0.1.0") fail(f, `plugins[0].version must be "0.1.0", got: "${e.version}"`);
+  if (e.version !== "0.1.1") fail(f, `plugins[0].version must be "0.1.1", got: "${e.version}"`);
   if (!e.description) fail(f, "plugins[0].description must be non-empty");
   // policy checks
   if (!e.policy || typeof e.policy !== "object") { fail(f, "plugins[0].policy must be an object"); }

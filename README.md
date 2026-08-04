@@ -1,5 +1,27 @@
 # Nolto — Codex CLI Plugin
 
+> [!IMPORTANT]
+> **このプラグインは提供終了しました / This plugin is retired** (2026-08)
+>
+> Nolto は MCP ベースのプラン登録から、ローカルの `.roadmap/roadmap.json` を
+> CLI が同期する方式へ移行しました。本プラグインが依存するホスト型 MCP サーバーは
+> 撤去済みのため、プラグインは動作しません。今後は CLI をご利用ください:
+>
+> ```bash
+> npm install -g @nolto/cli
+> nolto init
+> ```
+>
+> `nolto init` が roadmap-progress スキルのインストールとプロジェクト設定を行い、
+> `nolto watch` / `nolto sync` がロードマップを自動同期します。
+> 詳細: https://nolto.app/docs
+>
+> Nolto has moved from MCP-based plan registration to a local-first roadmap-sync
+> architecture. The hosted MCP server this plugin depends on has been removed,
+> so this plugin no longer works. Install `@nolto/cli` and run `nolto init` instead.
+> This repository is archived and will receive no further updates.
+
+
 Codex CLI から Nolto の MCP サーバーに接続し、プランの登録・フェーズ進捗の報告・ステータスの確認をスキルで操作できる公式プラグインです。
 
 このプラグインは以下を一括でインストールします:
